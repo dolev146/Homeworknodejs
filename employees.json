@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "dolev1",
+        "department": "bioligy1",
+        "salary": 1000
+    },
+    {
+        "id": 2,
+        "name": "dolev2",
+        "department": "bioligy2",
+        "salary": 2000
+    },
+    {
+        "id": 3,
+        "name": "dolev3",
+        "department": "bioligy3",
+        "salary": 3000
+    },
+    {
+        "id": 4,
+        "name": "dolev4",
+        "department": "bioligy4",
+        "salary": 4000
+    },
+    {
+        "id": 5,
+        "name": "dolev5",
+        "department": "bioligy5",
+        "salary": 5000
+    },
+    {
+        "id": 6,
+        "name": "dolev6",
+        "department": "bioligy6",
+        "salary": 6000
+    },
+    {
+        "id": 7,
+        "name": "dolev7",
+        "department": "bioligy7",
+        "salary": 7000
+    },
+    {
+        "id": 8,
+        "name": "dolev8",
+        "department": "bioligy8",
+        "salary": 8000
+    },
+    {
+        "id": 9,
+        "name": "dolev9",
+        "department": "bioligy9",
+        "salary": 9000
+    }
+]
