@@ -1,26 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        a {
-            margin-left: 50%;
+        .first {
+            margin-left: 35%;
             font-size: 5em;
+        }
+
+        .middle {
+            margin-left: 35%;
         }
     </style>
 </head>
+
 <body>
-    <a href="/api/employees">show all </a> <br/>
-    <form action="GET">
-        <label for="employee">
+    <a class="first" href="/api/employees">show all </a> <br />
+    <div class="middle">
+        <a href="/api/employees/1">Employee 1 </a> <br />
+        <a href="/api/employees/2">Employee 2 </a> <br />
+        <a href="/api/employees/3">Employee 3 </a> <br />
+        <a href="/api/employees/4">Employee 4 </a> <br />
+        <a href="/api/employees/5">Employee 5 </a> <br />
+        <a href="/api/employees/6">Employee 6 </a> <br />
+        <a href="/api/employees/7">Employee 7 </a> <br />
+        <a href="/api/employees/8">Employee 8 </a> <br />
+        <a href="/api/employees/9">Employee 9 </a> <br />
+    </div>
+    <br />
+
+    <br /><br />
+
+
+
+    <div class="middle">
+        <label for="empId">
             insert employee id
-             (1000,2000,3000,4000,5000,6000,7000,8000,9000)
-            </label>
-         <br/>
-<input type="text" id="employee" name="employees">
-<button type="submit" >SEND</button>
-    </form>
+            ( 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 )
+        </label>
+        <br />
+        <input type="text" id="empId">
+        <button id="submit">SEND</button><br />
+        <button id="delete">Delete</button><br />
+        <button id="fetchTest">fetchTest</button><br />
+        <button id="fetchDelete">fetchDelete</button><br />
+    </div><br/>
+
+    <div style="margin-left: 35%;" id="resultDiv">
+    </div>
+
+
+    <script>
+        let fetchHandler = () => {
+            let inputValue = document.querySelector("#empId").value
+            if (!inputValue) {
+                fetch("/api/employees/")
+                    .then(response => response.json())
+                    .then(emps => viewAllEmployees(emps))
+            } else {
+                fetch(`/api/employees/${inputValue}`)
+                    .then(response => response.json())
+                    .then(emps => viewAllEmployees(emps))
+            }
+        }
+
+        let fetchBtn = document.querySelector("#fetchTest")
+        fetchBtn.addEventListener("click", fetchHandler)
+
+        let viewAllEmployees = (emps) => {
+            let employees = emps
+            let resultDiv = document.querySelector("#resultDiv")
+                if(employees.eror === 404){
+                    resultDiv.innerHTML = JSON.stringify(employees)     
+                    return
+                }
+                employees = employees.map((employee) => {
+                    return (
+                        `
+               <div>
+                <span>department: ${employee.department}</span>
+                <span>id: ${employee.id}</span>
+                <span>name: ${employee.name}</span>
+                <span>salary ${employee.salary}</span>
+                </div>
+               `
+                    )
+                })
+                resultDiv.innerHTML = employees
+        }
+
+        let deleteWithFetch = () => {
+            let inputValue = document.querySelector("#empId").value
+            if (!inputValue) {
+                alert("no input detected")
+            } else {
+                fetch(`/api/employees/${inputValue}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => response.json())
+                    .then(emps => viewAllEmployees(emps))
+            }
+        }
+
+        let fetchDelete = document.querySelector("#fetchDelete")
+        fetchDelete.addEventListener("click", deleteWithFetch)
+
+
+
+
+
+
+
+        let RequestHandle = (url, cb, method) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(`${method}`, url)
+            xhr.responseType = 'json'
+            xhr.addEventListener('load', cb);
+            xhr.send()
+        }
+
+
+
+        let submitBtn = document.querySelector("#submit")
+        submitBtn.addEventListener("click", () => {
+            let inputValue = document.querySelector("#empId").value
+            if (!inputValue) {
+                RequestHandle("/api/employees", viewAllEmployees, 'GET')
+            } else {
+                RequestHandle(`/api/employees/${inputValue}`, viewAllEmployees, 'GET')
+            }
+        })
+
+
+        let DeleteBtn = document.querySelector("#delete")
+        DeleteBtn.addEventListener("click", () => {
+            let inputValue = document.querySelector("#empId").value
+            if (!inputValue) {
+                alert("no input detected")
+                return
+            } else {
+                RequestHandle(`/api/employees/${inputValue}`, viewAllEmployees, 'DELETE')
+            }
+        })
+
+    </script>
 </body>
+
 </html>
