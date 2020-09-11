@@ -31,11 +31,20 @@
         <a href="/api/employees/9">Employee 9 </a> <br />
     </div>
     <br />
+    <div class="middle">
+        <label for="POSTid"> employee Id</label>
+        <input id="POSTid" type="text">
+        <label for="POSTname">employee Name</label>
+        <input id="POSTname" type="text">
+        <label for="POSTdepartment">employee department</label>
+        <input id="POSTdepartment" type="text">
+        <label for="POSTsalary">employee salary</label>
+        <input id="POSTsalary" type="text">
+        <button id="POST">POST</button>
+    </div>
+    <br />
 
-    <br /><br />
-
-
-
+    <br />
     <div class="middle">
         <label for="empId">
             insert employee id
@@ -47,13 +56,60 @@
         <button id="delete">Delete</button><br />
         <button id="fetchTest">fetchTest</button><br />
         <button id="fetchDelete">fetchDelete</button><br />
-    </div><br/>
-
+    </div><br />
     <div style="margin-left: 35%;" id="resultDiv">
     </div>
 
 
     <script>
+
+        let POSThandler = () => {
+            let POSTid = document.querySelector("#POSTid").value
+            let POSTname = document.querySelector("#POSTname").value
+            let POSTdepartment = document.querySelector("#POSTdepartment").value
+            let POSTsalary = document.querySelector("#POSTsalary").value
+            if (!POSTid) {
+                return alert("no id input")
+            }
+            if (!POSTname) {
+                return alert("no name input")
+            }
+            if (!POSTdepartment) {
+                return alert("no department input")
+            }
+            if (!POSTsalary) {
+                return alert("no salary input")
+            }
+            const data = {
+                "id": POSTid,
+                "name": POSTname,
+                "department": POSTdepartment,
+                "salary": POSTsalary
+            }
+            fetch('/api/employees/', {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error('Error Dolev', error)
+                })
+
+        }
+        let POSTbtn = document.querySelector("#POST")
+        POSTbtn.addEventListener("click", POSThandler)
+
+
+
+
+
         let fetchHandler = () => {
             let inputValue = document.querySelector("#empId").value
             if (!inputValue) {
@@ -75,17 +131,17 @@
 
 
 
-        
+
         let viewAllEmployees = (emps) => {
             let employees = emps
             let resultDiv = document.querySelector("#resultDiv")
-                if(employees.eror === 404){
-                    resultDiv.innerHTML = JSON.stringify(employees)     
-                    return
-                }
-                employees = employees.map((employee) => {
-                    return (
-                        `
+            if (employees.eror === 404) {
+                resultDiv.innerHTML = JSON.stringify(employees)
+                return
+            }
+            employees = employees.map((employee) => {
+                return (
+                    `
                <div>
                 <span>department: ${employee.department}</span>
                 <span>id: ${employee.id}</span>
@@ -93,9 +149,9 @@
                 <span>salary ${employee.salary}</span>
                 </div>
                `
-                    )
-                })
-                resultDiv.innerHTML = employees
+                )
+            })
+            resultDiv.innerHTML = employees
         }
 
         let deleteWithFetch = () => {

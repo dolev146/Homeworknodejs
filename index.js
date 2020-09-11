@@ -1,12 +1,20 @@
 var express = require("express")
 var app = express()
 var fs = require('fs')
-var url = require('url')
-var path = require('path')
-var http = require("http")
 let employees = require("./employees.json")
-const { body,validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded());
+
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
+// Access the parse results as request.body
+// app.post('/', function(request, response){
+//     console.log(request.body.user.name);
+//     console.log(request.body.user.email);
+// });
+
 
 
 console.log(employees)
@@ -49,6 +57,13 @@ app.delete("/api/employees/:id", (req, res) => {
         return employee.id !== +id
     })
     res.json(employees)
+})
+
+app.post("/api/employees/" ,(req,res)=>{
+    console.log(req.body)
+    console.log(res)
+    res.send()
+  
 })
 
 
