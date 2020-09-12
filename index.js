@@ -2,20 +2,7 @@ var express = require("express")
 var app = express()
 var fs = require('fs')
 let employees = require("./employees.json")
-
-// Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded());
-
-// Parse JSON bodies (as sent by API clients)
 app.use(express.json());
-
-// Access the parse results as request.body
-// app.post('/', function(request, response){
-//     console.log(request.body.user.name);
-//     console.log(request.body.user.email);
-// });
-
-
 
 console.log(employees)
 
@@ -60,9 +47,21 @@ app.delete("/api/employees/:id", (req, res) => {
 })
 
 app.post("/api/employees/" ,(req,res)=>{
-    console.log(req.body)
-    console.log(res)
-    res.send()
+    let employee = req.body
+    employee.id = +employee.id
+    employee.salary = +employee.salary
+    let { id } = employee
+    let index
+    let checkEmployee = employees.filter((emp, i) => {
+        index = i
+        return emp.id === +id
+    })
+    if (checkEmployee.length > 0) {
+        employees[index] = employee
+    } else {
+        employees.push(employee)
+    }
+    res.send(employees)
   
 })
 

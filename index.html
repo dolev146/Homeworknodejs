@@ -96,10 +96,10 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Success:", data);
+                    viewAllEmployees(data)
                 })
                 .catch((error) => {
-                    console.error('Error Dolev', error)
+                    console.error('Error ', error)
                 })
 
         }
